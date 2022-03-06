@@ -68,6 +68,8 @@ contract MyEpicNFT is ERC721URIStorage {
         'Fairy'
     ];
 
+    event NewEpicNFTMinted(address sender, uint256 tokenId);
+
     constructor() ERC721('SquareNFT', 'SQUARE') {
         console.log('This is my NFT contract. Woah!');
     }
@@ -104,16 +106,13 @@ contract MyEpicNFT is ERC721URIStorage {
 
         string memory finalSvg = string(abi.encodePacked(baseSvg, combinedWord, '</text></svg>'));
 
-        // Get all the JSON metadata in place and base64 encode it.
         string memory json = Base64.encode(
             bytes(
                 string(
                     abi.encodePacked(
                         '{"name": "',
-                        // We set the title of our NFT as the generated word.
                         combinedWord,
                         '", "description": "A highly acclaimed collection of squares.", "image": "data:image/svg+xml;base64,',
-                        // We add data:image/svg+xml;base64 and then append our base64 encode our svg.
                         Base64.encode(bytes(finalSvg)),
                         '"}'
                     )
@@ -121,7 +120,6 @@ contract MyEpicNFT is ERC721URIStorage {
             )
         );
 
-        // Just like before, we prepend data:application/json;base64, to our data.
         string memory finalTokenUri = string(abi.encodePacked('data:application/json;base64,', json));
 
         console.log('\n--------------------');
@@ -130,10 +128,11 @@ contract MyEpicNFT is ERC721URIStorage {
 
         _safeMint(msg.sender, newItemId);
 
-        // Update your URI!!!
         _setTokenURI(newItemId, finalTokenUri);
 
         _tokenIds.increment();
         console.log('An NFT w/ ID %s has been minted to %s', newItemId, msg.sender);
+
+        emit NewEpicNFTMinted(msg.sender, newItemId);
     }
 }
