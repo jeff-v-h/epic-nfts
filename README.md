@@ -17,7 +17,8 @@ npx hardhat help
 ## Requirements
 
 - Alchemy API URL key
-- Wallet on Ethereum Rinkeby Test Network
+- Wallet on Ethereum Rinkeby Test Network such as Metamask
+- Etherscan account
 
 ## Development
 
@@ -27,13 +28,13 @@ To run on rinkeby testnet, add the following properties to the exported object f
 ```js
 networks: {
     rinkeby: {
-        url: 'YOUR_ALCHEMY_API_URL',
-        accounts: ['YOUR_PRIVATE_RINKEBY_ACCOUNT_KEY']
+        url: process.env.STAGING_ALCHEMY_KEY,
+        accounts: [process.env.PRIVATE_KEY]
     }
 }
 ```
 
-Add in your alchemy api url and rinkeby wallet (such as MetaMask) private account key.
+Add in your alchemy api url and rinkeby wallet (such as MetaMask) private account key to a .env file. Ther eis a .sample-env file to copy from.
 
 Use the scripts/run.js file to test compilation of smart contract: `npx hardhat run scripts/run.js`.
 
@@ -54,3 +55,7 @@ The code and the web app can be viewed on this [Replit repo](https://replit.com/
 5. In devtools, once successfully minted an etherscan url should be printed. Go to it and when it is successful (after indexing), copy the contract address (in the row with label "Interacted With (To):") and search for it on an NFT marketplace to see the minted NFT.
 
 Remember, everytime a new smart contract is deployed, both the contract address and json content need to be updated in the web app to match.
+
+## Check Smart contract on etherscan
+
+`npx hardhat verify YOUR_CONTRACT_ADDRESS --network rinkeby`
